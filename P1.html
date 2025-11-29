@@ -1,0 +1,318 @@
+<!--
+  Harsh Khangar - Single-file Portfolio (HTML/CSS/JS)
+  - Put this file in the same folder as Resume.pdf to enable the Resume download button
+  - Includes: animations, transitions, images (Unsplash), icons (Font Awesome), Projects section, Dark Mode
+  - Responsive and mobile-friendly
+-->
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Harsh Khangar — Portfolio</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <style>
+      :root{
+        --bg: #0f1724;
+        --card: #0b1220;
+        --muted: #9ca3af;
+        --accent: linear-gradient(90deg,#06b6d4,#7c3aed);
+        --glass: rgba(255,255,255,0.04);
+        --glass-2: rgba(255,255,255,0.02);
+        --white: #e6eef8;
+      }
+
+      /* Light theme variables (swapped when .light class on body) */
+      .light{ --bg: #f6f9fb; --card:#ffffff; --muted:#6b7280; --glass: rgba(0,0,0,0.03); --white:#0b1220 }
+
+      *{box-sizing:border-box}
+      html,body{height:100%;margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial;color:var(--white);background:var(--bg);-webkit-font-smoothing:antialiased}
+
+      .container{max-width:1100px;margin:0 auto;padding:32px}
+
+      /* Header */
+      header{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 0}
+      .brand{display:flex;align-items:center;gap:12px}
+      .name{font-weight:800;font-size:20px;letter-spacing:0.2px}
+      .tag{font-size:12px;color:var(--muted)}
+
+      nav{display:flex;gap:12px;align-items:center}
+      nav a{color:var(--muted);text-decoration:none;padding:10px 14px;border-radius:10px;transition:all .25s}
+      nav a:hover{background:var(--glass);color:var(--white);transform:translateY(-2px)}
+
+      .btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);-webkit-background-clip:text;background-clip:text;color:transparent;padding:8px 14px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);font-weight:600}
+      .btn.fill{background:linear-gradient(90deg,#06b6d4,#7c3aed);color:white;border:none}
+      .icon{width:36px;height:36px;border-radius:9px;display:inline-grid;place-items:center;background:var(--glass)}
+
+      /* Hero */
+      .hero{display:grid;grid-template-columns:1fr 380px;gap:28px;align-items:center;padding:36px 0}
+      .intro h1{font-size:36px;margin:0 0 12px}
+      .intro p{color:var(--muted);line-height:1.6;margin:0 0 18px}
+      .cta-row{display:flex;gap:12px;align-items:center}
+
+      .card{background:var(--card);padding:20px;border-radius:18px;box-shadow:0 6px 30px rgba(2,6,23,0.6);border:1px solid rgba(255,255,255,0.02)}
+
+      .stats{display:flex;gap:12px;flex-wrap:wrap}
+      .stat{flex:1;min-width:120px}
+      .stat strong{display:block;font-size:18px}
+      .stat span{font-size:12px;color:var(--muted)}
+
+      /* Projects */
+      .projects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;margin-top:18px}
+      .project{overflow:hidden;border-radius:12px;position:relative;transform:translateY(0);transition:transform .35s,box-shadow .35s}
+      .project:hover{transform:translateY(-8px);box-shadow:0 20px 40px rgba(2,6,23,0.55)}
+      .project img{width:100%;height:180px;object-fit:cover;display:block}
+      .project .pbody{padding:14px;background:linear-gradient(180deg,rgba(0,0,0,0.02),transparent)}
+      .tagline{font-size:13px;color:var(--muted)}
+
+      /* Sections */
+      section{padding:36px 0}
+      h2.section-title{font-size:22px;margin:0 0 12px}
+
+      /* Footer */
+      footer{padding:26px 0;text-align:center;color:var(--muted);font-size:14px}
+
+      /* Resume button */
+      .actions{display:flex;gap:10px;align-items:center}
+      .download{padding:10px 14px;border-radius:10px;background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--white);text-decoration:none}
+
+      /* Dark mode switch */
+      .switch{display:inline-flex;align-items:center;gap:8px}
+      .toggle{width:52px;height:28px;background:var(--glass);border-radius:999px;position:relative;padding:4px;cursor:pointer;transition:all .2s}
+      .knob{width:20px;height:20px;background:white;border-radius:50%;position:absolute;left:4px;top:4px;transition:left .22s}
+      .light .knob{left:28px}
+
+      /* Animations */
+      .fade-in{opacity:0;transform:translateY(10px);animation:fade .7s forwards}
+      @keyframes fade{to{opacity:1;transform:none}}
+
+      /* Responsive */
+      @media(max-width:920px){
+        .hero{grid-template-columns:1fr;}
+        .avatar{width:74px;height:74px}
+        .container{padding:20px}
+      }
+
+      @media(max-width:520px){nav{display:none}}
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <div class="brand">
+          <div class="avatar" aria-hidden style="width:74px;height:74px;border-radius:50%;overflow:hidden;border:2px solid var(--glass);background:var(--glass)">
+  <img src="/mnt/data/4ba21e0d-e59b-4232-aa16-1e39970edf71.jpg" alt="Harsh Photo" style="width:100%;height:100%;object-fit:cover" />
+</div>
+          <div>
+            <div class="name">Harsh Khangar</div>
+            <div class="tag">Electronics & Telecommunication • AI/ML Enthusiast</div>
+          </div>
+        </div>
+
+        <nav>
+          <a href="#about">About</a>
+          <a href="#projects">Projects</a>
+          <a href="#education">Education</a>
+          <a href="#contact">Contact</a>
+          <div class="switch" title="Toggle theme" id="themeSwitch">
+            <div class="toggle"><div class="knob"></div></div>
+          </div>
+        </nav>
+      </header>
+
+      <!-- HERO -->
+      <section class="hero">
+        <div class="intro fade-in">
+          <h1>Hi — I’m <span style="background:var(--accent);-webkit-background-clip:text;background-clip:text;color:transparent">Harsh</span>.<br> I build AI-enabled hardware & software projects.</h1>
+          <p>I’m a B.Tech student at MIT Academy of Engineering (Pune), focused on Embedded Systems, Signal Processing, and Machine Learning. I design practical prototypes and write clean, documented code.</p>
+
+          <div class="cta-row">
+            <a class="btn fill" href="#projects"><i class="fa-solid fa-code"></i> See Projects</a>
+            <a class="download" href="Resume.pdf" download><i class="fa-solid fa-file-arrow-down"></i> Download Resume</a>
+          </div>
+
+          <div style="margin-top:18px" class="stats">
+            <div class="stat card">
+              <strong>AI/ML</strong>
+              <span class="tagline">Python, MATLAB, Random Forest, XGBoost, DNNs</span>
+            </div>
+            <div class="stat card">
+              <strong>Embedded</strong>
+              <span class="tagline">STM32, ESP8266, PWM, UART, Proteus</span>
+            </div>
+            <div class="stat card">
+              <strong>Control & Signal</strong>
+              <span class="tagline">Root Locus, Filters, Transforms</span>
+            </div>
+          </div>
+        </div>
+
+        <aside class="card fade-in" style="height:100%">
+          <h3 style="margin:0 0 8px">Quick Info</h3>
+          <p class="tagline">B.Tech — Electronics & Telecommunication<br> MIT Academy of Engineering, Pune</p>
+          <div style="height:12px"></div>
+          <div class="card" style="padding:12px;display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <div>
+                <div style="font-weight:700">+91 7058221969</div>
+                <div class="tagline">Pune, Maharashtra</div>
+              </div>
+              <div style="text-align:right">
+                <a href="mailto:harshkhangar6134@gmail.com" class="icon"><i class="fa-solid fa-envelope"></i></a>
+              </div>
+            </div>
+
+            <div style="display:flex;gap:8px;margin-top:8px;justify-content:space-between">
+              <a class="icon" href="#projects" title="GitHub"><i class="fa-brands fa-github"></i></a>
+              <a class="icon" href="#contact" title="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
+              <a class="icon" href="#contact" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+            </div>
+
+          </div>
+        </aside>
+      </section>
+
+      <!-- ABOUT -->
+      <section id="about">
+        <h2 class="section-title">About Me</h2>
+        <div class="card">
+          <p>I am a passionate technology enthusiast with a strong interest in Artificial Intelligence and Machine Learning. I enjoy exploring solutions that bridge software and hardware systems, and I continuously seek opportunities to learn, experiment, and apply AI-driven approaches to real-world problems.</p>
+        </div>
+      </section>
+
+      <!-- PROJECTS -->
+      <section id="projects">
+        <h2 class="section-title">Projects</h2>
+        <div class="projects-grid">
+
+          <article class="project card">
+            <img src="https://images.unsplash.com/photo-1603145733146-f7f4c8efb672?q=80&w=1200&auto=format&fit=crop" alt="Fertilizer Predictor" />
+            <div class="pbody">
+              <h3>Fertilizer Quantity Predictor</h3>
+              <p class="tagline">ML model predicting fertilizer quantities from soil reports. Features: data cleaning, feature engineering, model training and deployment plan.</p>
+              <div style="margin-top:10px;display:flex;gap:8px">
+                <a class="btn" href="#">Read More</a>
+                <a class="btn" href="#">Code</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="project card">
+            <img src="https://images.unsplash.com/photo-1581093588401-5c8a4a5b3e7e?q=80&w=1200&auto=format&fit=crop" alt="Smart Dustbin">
+            <div class="pbody">
+              <h3>Smart Dustbin Monitoring System</h3>
+              <p class="tagline">ESP8266 + Ultrasonic sensor + Web dashboard for live fill-level monitoring and hygiene improvements.</p>
+              <div style="margin-top:10px;display:flex;gap:8px">
+                <a class="btn" href="#">Read More</a>
+                <a class="btn" href="#">Demo</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="project card">
+            <img src="https://images.unsplash.com/photo-1555617117-08fda1a1cc8b?q=80&w=1200&auto=format&fit=crop" alt="STM32 PWM">
+            <div class="pbody">
+              <h3>STM32 PWM LED Control & UART Monitoring</h3>
+              <p class="tagline">PWM on PC0–PC3 with duty cycles observed on DSO, UART streaming of duty cycles.</p>
+              <div style="margin-top:10px;display:flex;gap:8px">
+                <a class="btn" href="#">Read More</a>
+                <a class="btn" href="#">Simulation Files</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="project card">
+            <div class="pbody">
+              <h3>Baby Craddle Motion Detector (Proteus)</h3>
+              <p class="tagline">Cradle angle & speed detection with alarm triggers to improve safety limits during swinging.</p>
+              <div style="margin-top:10px;display:flex;gap:8px">
+                <a class="btn" href="#">Read More</a>
+                <a class="btn" href="#">Files</a>
+              </div>
+            </div>
+          </article>
+
+        </div>
+      </section>
+
+      <!-- EDUCATION -->
+      <section id="education">
+        <h2 class="section-title">Education</h2>
+        <div class="card">
+          <h4 style="margin:6px 0">MIT Academy of Engineering, Pune</h4>
+          <p class="tagline">B.Tech — Electronics & Telecommunication Engineering | CGPA: 7.67 (2023 - 2027)</p>
+
+          <div style="height:12px"></div>
+
+          <h4 style="margin:6px 0">J. M. Patel College, Bhandara</h4>
+          <p class="tagline">12th — MSBSHSE | 78.83% (2022)</p>
+
+          <h4 style="margin:6px 0">Royal Public School, Bhandara</h4>
+          <p class="tagline">10th — CBSE | 90.20% (2020)</p>
+        </div>
+      </section>
+
+      <!-- CONTACT -->
+      <section id="contact">
+        <h2 class="section-title">Contact</h2>
+        <div class="card" style="display:flex;gap:18px;align-items:center;flex-wrap:wrap">
+          <div style="flex:1;min-width:220px">
+            <h3 style="margin:0 0 8px">Get in touch</h3>
+            <p class="tagline">I’m available for internships and collaborations. Reach out and let’s build something great.</p>
+
+            <p style="margin-top:12px"><strong>Email</strong> — <a href="mailto:harshkhangar6134@gmail.com">harshkhangar6134@gmail.com</a></p>
+            <p><strong>Phone</strong> — <a href="tel:+917058221969">+91 7058221969</a></p>
+            <div style="margin-top:10px;display:flex;gap:10px">
+              <a class="btn" href="mailto:harshkhangar6134@gmail.com">Email Me</a>
+              <a class="download" href="Resume.pdf" download><i class="fa-solid fa-download"></i>&nbsp;Resume</a>
+            </div>
+          </div>
+
+          <div style="flex:1;min-width:280px">
+            <iframe title="contact-map" src="https://www.openstreetmap.org/export/embed.html?bbox=72.7180%2C18.5050%2C73.0210%2C18.7020&amp;layer=mapnik" style="border:0;width:100%;height:220px;border-radius:10px"></iframe>
+          </div>
+        </div>
+      </section>
+
+      <footer>
+        <div class="tagline">© <span id="year"></span> Harsh Khangar — Built with care. Designed for clarity.</div>
+      </footer>
+    </div>
+
+    <script>
+      // set year
+      document.getElementById('year').textContent = new Date().getFullYear();
+
+      // theme toggle
+      const body = document.body;
+      const switcher = document.getElementById('themeSwitch');
+      const stored = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme:light)').matches ? 'light' : 'dark');
+      if(stored === 'light') body.classList.add('light');
+
+      switcher.addEventListener('click', ()=>{
+        body.classList.toggle('light');
+        localStorage.setItem('theme', body.classList.contains('light') ? 'light' : 'dark');
+      });
+
+      // simple reveal-on-scroll
+      const elems = document.querySelectorAll('.fade-in');
+      const obs = new IntersectionObserver((entries)=>{
+        for(const e of entries){ if(e.isIntersecting) e.target.style.animationDelay = '0.06s', e.target.classList.add('visible'), e.target.style.animationPlayState='running'; }
+      },{threshold:0.12});
+      elems.forEach(el=>{el.style.animationPlayState='paused';obs.observe(el)});
+
+      // smooth scroll for internal links
+      document.querySelectorAll('a[href^="#"]').forEach(a=>{
+        a.addEventListener('click', (ev)=>{
+          ev.preventDefault();
+          const t = document.querySelector(a.getAttribute('href'));
+          if(t) t.scrollIntoView({behavior:'smooth',block:'start'});
+        })
+      })
+    </script>
+  </body>
+</html>
+
